@@ -1,37 +1,41 @@
- using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using WebApi.DBOperations;
 
-namespace WebApi
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<ToDoDbContext>(options => options.UseInMemoryDatabase("ToDoDB"));
+builder.Services.AddScoped<IToDoDbContext>(provider => provider.GetService<ToDoDbContext>());
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
+var app = builder.Build();
+using(var scope = app.Services.CreateScope())
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var host = CreateHostBuilder(args).Build();
-            
-            using(var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                DataGenerator.Initialize(services);
-            }
-
-            host.Run();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+    var services = scope.ServiceProvider;
+    DataGenerator.Initialize(services);
 }
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
 
 
