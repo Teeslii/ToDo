@@ -1,0 +1,4 @@
+.vscode/
+WebApi/bin
+WebApi/obj
+*.dll
