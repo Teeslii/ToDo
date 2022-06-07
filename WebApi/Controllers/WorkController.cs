@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Application.WorkOperations.Queries.GetWorks;
+using WebApi.Application.WorkOperations.Query.GetWorkDetail;
 using WebApi.DBOperations;
 
 namespace WebApi.Controllers
@@ -32,7 +34,19 @@ namespace WebApi.Controllers
             
             return Ok(result);
         }
-
+        
+        [HttpGet("{title}")]
+        public IActionResult GetWorkDetail(string title)
+        {
+            var query = new GetWorkDetailQuery(_dbContext, _mapper);
+            query.WorkTitle = title;
+            
+            GetWorkDetailQueryValidator validator = new GetWorkDetailQueryValidator();
+            validator.ValidateAndThrow(query);
+            
+            var result = query.Handle();
+            return Ok(result);
+        }
      
     }
 }

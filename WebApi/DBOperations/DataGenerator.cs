@@ -31,7 +31,15 @@ namespace WebApi.DBOperations
                    {
                        Title = "Apple Project part 2",
                        Content = "The listing will be done through the data.",
-                       StatusId = 2
+                       StatusId = 2,
+                       IsComplete = false
+                   },
+                     new Work
+                   {
+                       Title = "Banana Project part 2",
+                       Content = "The listing will be done through the data.",
+                       StatusId = 2,
+                       IsComplete = false
                    }
                 );
 
