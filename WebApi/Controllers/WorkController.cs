@@ -7,6 +7,7 @@ using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApi.Application.WorkOperations.Command.CreateWork;
 using WebApi.Application.WorkOperations.Queries.GetWorks;
 using WebApi.Application.WorkOperations.Query.GetWorkDetail;
 using WebApi.DBOperations;
@@ -46,6 +47,19 @@ namespace WebApi.Controllers
             
             var result = query.Handle();
             return Ok(result);
+        }
+        [HttpPost]
+        public IActionResult CreateWork([FromBody] CreateWorkViewModel createModel)
+        {
+            CreateWorkCommand command = new CreateWorkCommand(_dbContext, _mapper);
+            command.CreateModel = createModel;
+        
+            CreateWorkCommandValidator validator = new CreateWorkCommandValidator();
+            validator.ValidateAndThrow(command);
+
+            command.Handle();
+            
+            return Ok();
         }
      
     }
