@@ -8,6 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Application.WorkOperations.Command.CreateWork;
+using WebApi.Application.WorkOperations.Command.DeleteWork;
 using WebApi.Application.WorkOperations.Queries.GetWorks;
 using WebApi.Application.WorkOperations.Query.GetWorkDetail;
 using WebApi.DBOperations;
@@ -61,6 +62,18 @@ namespace WebApi.Controllers
             
             return Ok();
         }
-     
+        
+        [HttpDelete("{id}")]
+        public IActionResult DeleteWork(int id)
+        {
+            DeleteWorkCommand command = new DeleteWorkCommand(_dbContext);
+            command.WorkId = id;
+
+            DeleteWorkCommandValidator validator = new DeleteWorkCommandValidator();
+            validator.ValidateAndThrow(command);
+            command.Handle();
+
+            return Ok();
+        }
     }
 }
