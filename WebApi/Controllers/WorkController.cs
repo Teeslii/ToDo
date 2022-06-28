@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Application.WorkOperations.Command.CreateWork;
 using WebApi.Application.WorkOperations.Command.DeleteWork;
+using WebApi.Application.WorkOperations.Command.UpdateWork;
 using WebApi.Application.WorkOperations.Queries.GetWorks;
 using WebApi.Application.WorkOperations.Query.GetWorkDetail;
 using WebApi.DBOperations;
@@ -74,6 +75,21 @@ namespace WebApi.Controllers
             command.Handle();
 
             return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateWork(int id, [FromBody] UpdateWorkViewModel model)
+        {
+           UpdateWorkCommand command = new UpdateWorkCommand(_dbContext);
+           command.WorkId = id;
+           command.Model = model;
+
+           UpdateWorkCommandValidator validator = new UpdateWorkCommandValidator();
+           validator.ValidateAndThrow(command);
+            
+           command.Handle();
+
+           return Ok();
         }
     }
 }
