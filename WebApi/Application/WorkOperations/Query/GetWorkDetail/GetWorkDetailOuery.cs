@@ -23,7 +23,7 @@ namespace WebApi.Application.WorkOperations.Query.GetWorkDetail
         public List<WorkDetailViewModel> Handle()
         {
            // var work = _dbContext.Works.SingleOrDefault(x => x.Id == WorkId && x.IsComplete == false);
-            var work = _dbContext.Works.Include(x => x.Status).OrderBy(w => w.Id).Where(x => x.Title.Contains(WorkTitle));
+            var work = _dbContext.Works.Include(x => x.Status).OrderBy(w => w.Id).Where(x => x.Title.ToLower().Contains(WorkTitle.ToLower()));
 
             if(work.Count() == 0)
             {
