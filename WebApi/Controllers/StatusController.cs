@@ -8,6 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApi.Application.StatusOperations.Command.CreateStatus;
+using WebApi.Application.StatusOperations.Command.UpdateStatus;
 using WebApi.Application.StatusOperations.Query.GetStatuses;
 using WebApi.DBOperations;
 
@@ -49,6 +50,20 @@ namespace WebApi.Controllers
 
             return Ok();
         }
-       
+        
+        [HttpPut("{id}")]
+        public IActionResult UpdateStatus(int id, [FromBody] UpdateStatusViewModel updatemodel)
+        {
+            var command = new UpdateStatusCommand(_context);
+            command.StatusId = id;
+            command.UpdateModel = updatemodel;
+
+            UpdateStatusCommandValidator validator = new UpdateStatusCommandValidator();
+            validator.ValidateAndThrow(command);
+
+            command.Handle();
+
+            return Ok();
+        }
     }
 }
