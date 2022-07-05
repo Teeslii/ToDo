@@ -2,6 +2,6 @@ namespace WebApi.Services
 {
     public interface ILoggerService
     {
-        public void Write(string message);
+         void Write(string message);
     }
 }

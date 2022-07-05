@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApi.Application.StatusOperations.Command.CreateStatus;
 using WebApi.Application.StatusOperations.Query.GetStatuses;
 using WebApi.DBOperations;
 
@@ -33,7 +35,20 @@ namespace WebApi.Controllers
 
             return Ok(result);
         }
+        
+        [HttpPost]
+        public IActionResult CreateStatus([FromBody] CreateStatusViewModel createModel)
+        {
+            CreateStatusCommand command = new CreateStatusCommand(_context, _mapper);
+            command.CreateModel = createModel;
 
+            CreateStatusCommandValidator validator = new CreateStatusCommandValidator();
+            validator.ValidateAndThrow(command);
+
+            command.Handle();
+
+            return Ok();
+        }
        
     }
 }

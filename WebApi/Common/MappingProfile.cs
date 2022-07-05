@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using WebApi.Application.StatusOperations.Command.CreateStatus;
 using WebApi.Application.StatusOperations.Query.GetStatuses;
 using WebApi.Application.WorkOperations.Command.CreateWork;
 using WebApi.Application.WorkOperations.Queries.GetWorks;
@@ -22,6 +23,8 @@ namespace WebApi.Common
               CreateMap<CreateWorkViewModel, Work>();
               
               CreateMap<Status, StatusesViewModel>();
+
+             
         }
     }
 }
