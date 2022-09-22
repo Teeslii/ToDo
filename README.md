@@ -7,4 +7,9 @@ ToDo provides you to note the tasks of the day according to their priority statu
 
 ## Project Requirements 📜
 
+### :ticket: Status
+ 
+ You can list the registered statuses and create a new status.
+
+![GETPOST](https://user-images.githubusercontent.com/60256102/191794707-968e00e8-d3d7-438f-9d8f-3f54c2bf89c3.gif)
 
